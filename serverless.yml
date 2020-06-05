@@ -1,0 +1,85 @@
+service: todo
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-2
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+      Resource:
+        - "arn:aws:dynamodb:*:*"
+  environment: 
+    APP_SECRET: secret_key_here
+    DB_PREFIX: dev
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    useChildProcesses: true
+  stage: ${opt:stage, self:provider.stage}
+  DB_PREFIX: dev
+  dynamodb:  
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+    seed:
+      domain:
+        sources:
+          - table: ${self:custom.DB_PREFIX}-todos
+            sources: [./offline/migrations/todo-seed.json]
+
+  webpack: config/webpack.config.js
+
+functions:
+  auth:
+    handler: auth.authorize
+
+  getAllTodos:
+    handler: handler.getAllTodos
+    events:
+      - http:
+          method: GET
+          path: todos
+          cors: true
+
+  createTodo:
+    handler: handler.createTodo
+    events:
+      - http:
+          method: POST
+          path: todos
+          cors: true
+
+  updateTodo:
+    handler: handler.updateTodo
+    events:
+      - http:
+          method: PUT
+          path: todos
+          cors: true
+  
+  deleteTodo:
+    handler: handler.deleteTodo
+    events:
+      - http:
+          method: DELETE
+          path: todos/delete
+          cors: true
+
+resources:
+  Resources: ${file(offline/migrations/todo.yml)}
+
+package:
+  exclude:
+    - node_modules/dynamodb-localhost/**
+    - node_modules/serverless-dynamodb-local/**
+    - node_modules/serverless-offline/**
+

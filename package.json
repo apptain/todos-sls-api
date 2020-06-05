@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dynamo:install": " sls dynamodb install",
+    "dynamo:start": "sls dynamodb start",
+    "start": "serverless offline start"
+  },
+  "author": "Apptain",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "2.384.0",
+    "bluebird": "3.5.3"
+  },
+  "devDependencies": {
+    "serverless": "^1.57.0",
+    "serverless-offline": "5.3.1",
+    "serverless-dynamodb-local": "^0.2.30",
+    "serverless-webpack": "5.3.1",
+    "webpack": "4.42.1"
+  }
+}
