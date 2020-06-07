@@ -16,9 +16,10 @@
     "bluebird": "3.5.3"
   },
   "devDependencies": {
+    "dynamodb-admin": "^4.0.0",
     "serverless": "^1.57.0",
-    "serverless-offline": "5.3.1",
     "serverless-dynamodb-local": "^0.2.30",
+    "serverless-offline": "5.3.1",
     "serverless-webpack": "5.3.1",
     "webpack": "4.42.1"
   }
