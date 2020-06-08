@@ -21,6 +21,7 @@ plugins:
 
 custom:
   serverless-offline:
+    port: 9000
     useChildProcesses: true
   stage: ${opt:stage, self:provider.stage}
   DB_PREFIX: dev
