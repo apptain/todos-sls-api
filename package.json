@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dynamo:install": "sls dynamodb install",
     "dynamo:start": "sls dynamodb start",
-    "start": "serverless offline start"
+    "dynamo:client": "node dbclient.js",
+    "start": "lsof -ti:8000 | xargs kill && serverless offline start"
   },
   "author": "Apptain",
   "license": "MIT",
