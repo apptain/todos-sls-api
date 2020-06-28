@@ -11,12 +11,12 @@
         "program": "${workspaceRoot}/node_modules/serverless/bin/serverless",
         "args": [
           "offline",
-          "--noTimeout",
-          "--dontPrintOutput",
-          "--stage=local",
-          "-P",
-          "3002",
-          "--aws-profile=#PROFILENAME#"
+          // "--noTimeout",
+          // "--dontPrintOutput",
+          // "--stage=local",
+          // "-P",
+          // "3002",
+          // "--aws-profile=#PROFILENAME#"
         ],
         "sourceMaps": true,
         "runtimeArgs": ["--lazy"],

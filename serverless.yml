@@ -10,9 +10,10 @@ package:
 
 # Create our resources with separate CloudFormation templates
 resources:
-  # API Gateway Errors
-  #- ${file(resources/api-gateway-errors.yml)}
-  - ${file(offline/migrations/todo.yml)}
+  Resources: ${file(offline/migrations/todo.yml)}
+  # # API Gateway Errors
+  # #- ${file(resources/api-gateway-errors.yml)}
+  # - ${file(offline/migrations/todo.yml)}
 
 provider:
   name: aws
@@ -49,7 +50,7 @@ custom:
   serverless-offline:
     port: 9000 
   stage: ${opt:stage, self:provider.stage}
-  DB_PREFIX: dev
+  DB_PREFIX: ${self:service}-${opt:stage, self:provider.stage}
   dynamodb:
     stages:
       - ${self:provider.stage}
@@ -63,8 +64,8 @@ custom:
         sources:
           - table: ${self:custom.DB_PREFIX}-todos
             sources: [./offline/migrations/todo-seed.json]
-          - table: ${self:custom.DB_PREFIX}-spots
-            sources: [./offline/migrations/spot-seed.json]
+          # - table: ${self:custom.DB_PREFIX}-spots
+          #   sources: [./offline/migrations/spot-seed.json]
   authorizer:
     name: authorizer
     type: "TOKEN"
