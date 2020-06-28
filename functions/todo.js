@@ -2,6 +2,7 @@
 
 var Promise = require("bluebird");
 var db = require("../database/dynamodb");
+import { success, failure } from "../../libs/response-lib";
 
 const DB_PREFIX = process.env.IS_OFFLINE ? "dev" : process.env.DB_PREFIX;
 
@@ -15,8 +16,7 @@ const response = (status, data) => {
   };
 };
 
-
-module.exports.createTodo = (event, cb) => {
+export async function createTodo(event, context) {
   const data = JSON.parse(event.body);
   db("put", {
     TableName: DB_PREFIX + "-todos",
@@ -27,41 +27,25 @@ module.exports.createTodo = (event, cb) => {
     }
   })
   .then(result => {
-    cb(null, response(201, {}));
+    return success({});
   })
   .catch(err => {
-    cb(
-      null,
-      response(500, {
-        err: err
-      })
-    );
+    return failure({ status: false });
   });
 };
 
-
-module.exports.getAllTodos = (event, cb) => {
+export async function getAllTodos(event, context) {
   db("scan", {
       TableName: DB_PREFIX + "-todos"
   }).then(todos => {
-  cb(
-      null,
-      response(200, {
-        result: todos
-      })
-    );
+    return success(todos);
   })
   .catch(err => {
-    cb(
-      null,
-      response(500, {
-        err: err
-      })
-    );
+    return failure({ status: false });
   });
 };
 
-module.exports.updateTodo = (event, cb) => {
+export async function updateTodo(event, context) {
   const data = JSON.parse(event.body);
   db("update", {
     TableName: DB_PREFIX + "-todos",
@@ -86,7 +70,7 @@ module.exports.updateTodo = (event, cb) => {
   });
 };
 
-module.exports.deleteTodo = (event, cb) => {
+export async function deleteTodo(event, context) {
   const id = event.pathParameters.id;
   db("delete", {
     TableName: DB_PREFIX + "-todos",

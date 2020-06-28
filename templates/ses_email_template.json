@@ -1,0 +1,8 @@
+{
+    "Template": {
+        "TemplateName": "EmailTemplate",
+        "SubjectPart": "{{subject}}",
+        "HtmlPart": "{{html}}",
+        "TextPart": "{{text}}"
+    }
+}
