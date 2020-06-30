@@ -124,13 +124,22 @@ functions:
           cors: true
           authorizer: ${self:custom.authorizer}
 
-  todos-get:
+  todos-list:
     handler: functions/todos/list.main
     events:
       - http:
           path: todos
           method: get
           cors: true
+
+  todo-get:
+    handler: functions/todos/get.main
+    events:
+      - http:
+          path: todos/{id}
+          method: get
+          cors: true
+
 
   createTodo:
     handler: functions/todo.createTodo
