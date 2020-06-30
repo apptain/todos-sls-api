@@ -1,26 +1,33 @@
 import dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 
-export function main(event, context, callback){
+export function main(event, context, callback) {
   const params = {
     TableName: process.env.TABLE_PREFIX + '-todos',
     // 'Key' defines the partition key and sort key of the item to be retrieved
     // - 'creatorId': Identity Pool identity id of the authenticated user
     // - 'eventId': path parameter
     Key: {
-      "id": {
-        S: event.pathParameters.id
-      }
+      "id": event.pathParameters.id
     }
   };
 
   try {
     //const dynamoDb  = dynamoDbLib();
-   dynamoDbLib.getItem(params, function(err, res) {
-      if (err) callback(err);
-      if (!res.Item)  callback(new Error('No item found'));
-      callback(null, JSON.stringify(res.Item));
-      return;
+   dynamoDbLib.get(params, function(err, res) {
+      if (err) {
+        return failure(err);
+      }
+      if (!res.Item)  {
+        callback(new Error('Item not found'));
+        return;
+      }
+      // create a response
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify(res.Item),
+      };
+      callback(null, response);
      });
 
     // if (result.Item) {

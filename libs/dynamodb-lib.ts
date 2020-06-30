@@ -8,10 +8,10 @@ const dynamodbOfflineOptions = {
   };
 
 var client = process.env.IS_OFFLINE
-  ? new AWS.DynamoDB(dynamodbOfflineOptions)
-  : new AWS.DynamoDB();
+  ? new AWS.DynamoDB.DocumentClient(dynamodbOfflineOptions)
+  : new AWS.DynamoDB.DocumentClient();
 
-export default client; 
+export default client;
 
 
 

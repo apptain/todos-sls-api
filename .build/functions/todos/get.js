@@ -10,20 +10,25 @@ function main(event, context, callback) {
         // - 'creatorId': Identity Pool identity id of the authenticated user
         // - 'eventId': path parameter
         Key: {
-            "id": {
-                S: event.pathParameters.id
-            }
+            "id": event.pathParameters.id
         }
     };
     try {
         //const dynamoDb  = dynamoDbLib();
-        dynamodb_lib_1.default.getItem(params, function (err, res) {
-            if (err)
-                callback(err);
-            if (!res.Item)
-                callback(new Error('No item found'));
-            callback(null, JSON.stringify(res.Item));
-            return;
+        dynamodb_lib_1.default.get(params, function (err, res) {
+            if (err) {
+                return response_lib_1.failure(err);
+            }
+            if (!res.Item) {
+                callback(new Error('Item not found'));
+                return;
+            }
+            // create a response
+            var response = {
+                statusCode: 200,
+                body: JSON.stringify(res.Item),
+            };
+            callback(null, response);
         });
         // if (result.Item) {
         //   // Return the retrieved item
